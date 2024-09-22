@@ -1,4 +1,4 @@
-# Job Board Application
+# Job Board
 
 The **Job Board Application** is a platform designed for job seekers and employers. It allows users to search and apply for jobs, track the status of their applications, and save jobs they are interested in. Employers can post job listings, manage applications, and track applicant activity.
 
