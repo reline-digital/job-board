@@ -18,4 +18,4 @@ The **Job Board Application** is a platform designed for job seekers and employe
 
 ## Tech Stack
 - **Backend**: Python, Django
-- **Frontend**: React
+- **Frontend**: JavaScript, React
