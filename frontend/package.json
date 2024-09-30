@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,9 +8,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -27,8 +23,6 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
     "prettier": "3.3.3",
     "vite": "^5.4.1"
   }
