@@ -12,9 +12,9 @@ This is the backend for the Job Board application, built using Django. Follow th
 ### 1.Create the virtual environment(Using Virtualenv)
 - python -m venv *name_of_environment* 
 
-### 2.Activate enviromnent
+### 2.Activate environment
 - Windows (env\Scripts\activate)
-- Mac/Linux (env/bin/activate)
+- Mac/Linux (source env/bin/activate)
 
 ### 3.Install dependencies
 - pip install -r requirements.txt

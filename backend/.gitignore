@@ -51,6 +51,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+backend/
 
 # PyInstaller
 *.manifest
