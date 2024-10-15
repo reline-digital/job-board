@@ -78,3 +78,39 @@ python manage.py runserver
     "message": "Login successful"
 }
 ```
+
+## 3. Password Reset Request:
+- **Endpoint:** `/password-reset/`
+- **Method:** `POST`
+- **Description:** Sends a password reset email to the register user.
+#### Request Body:
+```json
+{
+    "email": "johndoe@example.com"
+}
+```
+**Response (Success: `200 OK`):**
+```json
+{
+    "message": "Password reset email sent."
+}
+```
+
+## 4. Password Reset Confirmation
+- **Endpoint:** `/reset/<uidb64>/<token>/`
+- **Method:** `POST`
+- **Description:** Confirms the password reset using the token and allows the user to set a new password.
+
+#### Request Body:
+```json
+{
+    "new_password": "newpassword123",
+    "confirm_password": "newpassword123"
+}
+```
+**Response (Success: `200 OK`):**
+```json
+{
+    "message": "Password has been reset successfully."
+}
+```
