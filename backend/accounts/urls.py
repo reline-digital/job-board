@@ -3,6 +3,8 @@ from .views import (
     register_user, login_user, password_reset,
     password_reset_confirm, list_jobs, create_job, retrieve_job, update_job, delete_job
 )
+from rest_framework_simplejwt.views import TokenRefreshView
+
 
 urlpatterns = [
     # Authentication
@@ -10,6 +12,9 @@ urlpatterns = [
     path('api/login/', login_user, name="login"),
     path('password-reset/', password_reset, name='password_reset'),
     path('reset/<uidb64>/<token>/', password_reset_confirm, name='password_reset_confirm'),
+
+    # For refresh token
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # Jobs
     path('jobs/', list_jobs, name='list-jobs'),
