@@ -56,7 +56,11 @@ python manage.py runserver
 **Response (Success: `201 Created`):**
 ```json
 {
-    "message": "User registered successfully."
+    "message": "User registered successfully.",
+    "token": {
+        "refresh": "<refresh_token>",
+        "access": "<access_token>"
+    }
 }
 ```
 
@@ -75,7 +79,11 @@ python manage.py runserver
 **Response (Success: `200 OK`):**
 ```json
 {
-    "message": "Login successful"
+    "message": "Login successful",
+    "tokens": {
+        "refresh": "<refresh_token>",
+        "access": "<access_token>"
+    }
 }
 ```
 
@@ -114,3 +122,114 @@ python manage.py runserver
     "message": "Password has been reset successfully."
 }
 ```
+
+## 5. Token Refresh
+- **Endpoint:** `/api/toke/refresh/`
+- **Method:** `POST`
+- **Description:** Refreshes the access token using the refresh token.
+
+#### Request Body
+```json
+{
+    "refresh": "<refresh_token>"
+}
+```
+**Response (Success: `200 OK`)**
+```json
+{
+    "access": "<new_access_token>"
+}
+```
+
+
+# JOb Management Endpoints
+## 1. List Jobs
+- **Endpoint:** `/jobs/`
+- **Method:** `GET`
+- **Description:** Retrieves a list of all job postings. Requires authentication.
+
+**Response (Success: `200 OK`)**
+```json
+[
+    {
+        "id": 1,
+        "title": "Software Engineer",
+        "description": "Develop and maintain software solutions.",
+        "employer": "Company ABC"
+    },
+    ...
+]
+```
+
+## 2. Create Job
+- **Endpoint:** `/jobs/create/`
+- **Method:** `POST`
+- **Description:** Creates a new job posting. Requires authentication.
+
+#### Request Body**
+```json
+{
+    "title": "Software Engineer",
+    "description": "Looking for a Software Engineer to join our team.",
+    "requirements": "Experience with Django and REST Framework.",
+    "salary": 70000,
+    "location": "Remote"
+}
+```
+
+**Response (SuccessL `201 Created`)**
+```json
+{
+    "id": 1,
+    "title": "Software Engineer",
+    "description": "Looking for a Software Engineer to join our team.",
+    "requirements": "Experience with Django and REST Framework.",
+    "salary": 70000,
+    "location": "Remote",
+    "employer_id": 1
+}
+```
+
+## 3. Retrieve Job
+- **Endpoint:** `/jobs/<int:pk>/`
+- **Method:** `GET`
+- **Description:** Retrieves details of a specific job by ID. Requires authentication.
+
+**Response (Success: `200 Ok`)**
+```json
+{
+    "id": 1,
+    "title": "Software Engineer",
+    "description": "Looking for a Software Engineer to join our team.",
+    "requirements": "Experience with Django and REST Framework.",
+    "salary": 70000,
+    "location": "Remote",
+    "employer_id": 1
+}
+```
+
+## Update Job
+- **Endpoint:** `/jobs/<int:pk>/update/`
+- **Method:** `PUT`
+- **Description:** Updates a job posting. Only the job creator can update the job. Requires authentication.
+
+**Request Body**
+```json
+{
+    "id": 1,
+    "title": "Backend Developer",
+    "description": "Looking for a Backend Developer to join our team.",
+    "requirements": "Experience with Django and REST Framework.",
+    "salary": 70000,
+    "location": "Remote",
+    "employer_id": 1
+}
+```
+**Response (Success: `200 ok`)**
+
+## 5. Delete Job
+- **Endpoint:** `/jobs/<int:pk>/delete/`
+- **Method:** `DELETE`
+- **Description:** Deletes a job posting. Only the job creator can delete the job. Requires authentication.
+
+**Response (Success: `204 No Content`)**

@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import JobSerializer
 from .models import Job
 from rest_framework.response import Response
@@ -13,9 +13,20 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.core.mail import send_mail
 from job_board_be import settings
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+# Function to generate JWT tokens
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     user_form = UserRegistrationForm(data=request.data)
     if user_form.is_valid():
@@ -24,13 +35,22 @@ def register_user(request):
         # Set the chosen password
         new_user.set_password(user_form.cleaned_data['password1'])
         new_user.save()
-        return Response({"message": "User registered successfully."},
-                        status=status.HTTP_201_CREATED)
+
+        # Generate JWT tokens for the new user
+        tokens = get_tokens_for_user(new_user)
+
+        return Response(
+            {
+                "message": "User registered successfully.",
+                "token": tokens
+            },
+            status=status.HTTP_201_CREATED)
     else:
         return Response(user_form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login_user(request):
     login_form = UserLoginForm(data=request.data)
 
@@ -43,8 +63,15 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return Response({'message': 'Login successful'},
-                                status=status.HTTP_200_OK)
+                # Generate JWT tokens for the user
+                tokens = get_tokens_for_user(user)
+
+                return Response(
+                    {
+                        "message": "Login successful",
+                        "tokens": tokens
+                    },
+                    status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Account is inactive'},
                                 status=status.HTTP_403_FORBIDDEN)
@@ -55,6 +82,7 @@ def login_user(request):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def password_reset(request):
     form = PasswordResetForm(data=request.data)
     if form.is_valid():
@@ -90,6 +118,7 @@ def password_reset(request):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def password_reset_confirm(request, uidb64, token):
     form = SetNewPasswordForm(data=request.data, uidb64=uidb64, token=token)
 
@@ -114,8 +143,7 @@ def list_jobs(request):
 def create_job(request):
     serializer = JobSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(
-            employer=request.user)
+        serializer.save(employer=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
