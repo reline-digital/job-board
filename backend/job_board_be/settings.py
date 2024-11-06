@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',         # Django REST framework
     'corsheaders',            # CORS headers for allowing frontend requests
     'accounts',               # Our custom app
+    'applications',
 ]
 
 MIDDLEWARE = [
